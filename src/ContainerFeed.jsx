@@ -5,6 +5,9 @@ export default function ContainerFeed() {
     const baseUrl = "https://icanhazdadjoke.com";
     const params = { headers: { Accept: "application/json" } };
     const [content, setContent] = useState({});
+    useEffect(function () {
+        fetchData();
+    }, [])
     const fetchData = async () => {
         const response = await fetch(baseUrl, params);
         const data = await response.json();
