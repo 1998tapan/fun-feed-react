@@ -1,22 +1,25 @@
 import { useState, useEffect } from "react";
 import "./ContainerFeed.css";
 
+const baseUrl = "https://icanhazdadjoke.com";
+const params = { headers: { Accept: "application/json" } };
+
 export default function ContainerFeed() {
-    const baseUrl = "https://icanhazdadjoke.com";
-    const params = { headers: { Accept: "application/json" } };
-    const [content, setContent] = useState({});
+    const [content, setContent] = useState({ isLoading: true });
     useEffect(function () {
         fetchData();
-    }, [])
+    }, []);
+
     const fetchData = async () => {
+        setContent(data => ({ ...data, isLoading: true }));
         const response = await fetch(baseUrl, params);
         const data = await response.json();
-        setContent(data);
+        setContent({ ...data, isLoading: false });
     }
     return (
         <main className="ContainerFeed">
             <h3 className="title">Don't Laugh Challenge</h3>
-            <div className="content">{content.joke}</div>
+            <div className="content">{content.isLoading ? "Loading..." : content.joke}</div>
             <button id="getAnotherBtn" onClick={fetchData}>Get Another Joke</button>
         </main>
     )
